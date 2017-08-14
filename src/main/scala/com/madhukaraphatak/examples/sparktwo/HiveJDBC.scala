@@ -19,12 +19,12 @@ object HiveJDBC {
     prop.put(JDBCOptions.JDBC_BATCH_FETCH_SIZE, "10")
     prop.put("kerberosAuthType","fromSubject")
     prop.put("driver", "org.apache.hive.jdbc.HiveDriver")
-    val con = DriverManager.getConnection("jdbc:hive2://172.16.80.71:10000/default",prop)
+    val con = DriverManager.getConnection("jdbc:hive2://172.16.50.21:10000/default",prop)
     val stat =con.createStatement()
-    val res = stat.executeQuery("select * from shit");
+    val res = stat.executeQuery("show databases");
 
     while (res.next()){
-      println("======="+res.getString("shit.id"))
+      println("======="+res.getString(1))
     }
   }
 }
