@@ -1,7 +1,7 @@
 package com.madhukaraphatak.examples.sparktwo
 
 import org.apache.spark.ml.clustering.KMeans
-import org.apache.spark.ml.linalg.SparseVector
+import org.apache.spark.ml.linalg.{SparseVector, Vectors}
 import org.apache.spark.sql.SparkSession
 
 /**
@@ -29,11 +29,8 @@ object DatasetVsDataFrame {
     val ds = sparkSession.read.option("header", "true").option("inferSchema", "true").csv("src/main/resources/sales.csv").as[Sales]
     val dataset = sparkSession.read.format("libsvm").load("src/main/resources/sample_kmeans_data.txt")
     //    val yang = df.foreach(f=>f.getAs[Int]("transactionId"))
-    val yang = df.flatMap(f => {
-      val s = Vector(f.getAs[Int]("transactionId"), f.getAs[Int]("customerId"), f.getAs[Int]("itemId"), f.getAs[Int]("amountPaid"))
-      s.slice(0,3)
-    }
-    )
+    val yang = dataset
+//    val a = yang.flatMap(row=>Seq(row(0)))
     yang.show()
     dataset.show()
     val kmeans = new KMeans().setK(2).setSeed(1L)

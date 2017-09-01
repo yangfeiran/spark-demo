@@ -19,10 +19,11 @@ libraryDependencies ++= Seq(
   "mysql" % "mysql-connector-java" % "5.1.30",
   "org.apache.spark" %% "spark-core" % sparkVersion,
   "org.apache.spark" %% "spark-sql" % sparkVersion,
-  "org.apache.spark" %% "spark-mllib" % sparkVersion,
+  "org.apache.spark" %% "spark-mllib" % "2.2.0",
   "org.apache.spark" %% "spark-streaming" % sparkVersion,
   "org.apache.spark" %% "spark-hive" % sparkVersion,
-  "org.apache.spark" %% "spark-mllib" % sparkVersion,
-  "com.github.scopt" %% "scopt" % "3.3.0"
+  "com.github.scopt" %% "scopt" % "3.3.0",
+  "com.typesafe"%"config"%"1.2.1"
+//  "spark.jobserver" % "job-server-api_2.10" % "2.1.0" % "provided"
 )
     

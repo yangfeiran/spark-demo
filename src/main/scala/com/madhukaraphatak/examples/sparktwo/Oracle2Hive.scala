@@ -5,7 +5,7 @@ import java.sql.{Connection, DriverManager, PreparedStatement, ResultSet}
 import org.apache.spark.sql.execution.datasources.jdbc.{JDBCOptions, JDBCRDD, JdbcUtils}
 import org.apache.spark.sql.jdbc.JdbcDialects
 import org.apache.spark.sql.types._
-import org.apache.spark.sql.{SaveMode, SparkSession}
+import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 //import com.databricks.spark.avro._
 import java.sql.{Connection, DriverManager}
 /**
@@ -44,18 +44,19 @@ object Oracle2Hive {
     val new_st = StructType(new_st_array)
     Class.forName("oracle.jdbc.driver.OracleDriver")
     val connection = DriverManager.getConnection("jdbc:oracle:thin:@172.16.50.24:1521:dev", "stargate", "123456")
-    createTable(new_st, "jdbc:oracle:thin:@172.16.50.24:1521:dev", "blobtest_1", "", connection,blob_name)
+    createTable(df,new_st, "jdbc:oracle:thin:@172.16.50.24:1521:dev", "blobtest_1", "", connection,blob_name)
     df.write.mode(SaveMode.Append).format("jdbc").jdbc("jdbc:oracle:thin:stargate/123456@172.16.50.24:1521:dev", "TEST1", new Properties)
   }
 
-  def createTable(
+  def createTable(df: DataFrame,
                    schema: StructType,
                    url: String,
                    table: String,
                    createTableOptions: String,
                    conn: Connection, blobname: String): Unit = {
     schema.toList
-    val strSchema = JdbcUtils.schemaString(schema, url)
+    val strSchema = JdbcUtils.schemaString(df, url)
+//    val strSchema = JdbcUtils.schemaString( schema,url)
     // Create the table if the table does not exist.
     // To allow certain options to append when create a new table, which can be
     // table_options or partition_options.
